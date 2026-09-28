@@ -1,70 +1,46 @@
-﻿using MongoDB.Driver;
-using MongoDB.Bson;
-using ConsoleAppMongoDB.Models;
+﻿using ConsoleAppMongoDB.Util;
 
-Console.WriteLine("Hola Mundo, VS2026 + MongoDB");
+string opcion = "";
+var mongoDBAdmin = new MongoDBAdmin();
 
-var mongoUrl = Environment.GetEnvironmentVariable("MONGODB_URI");
-var client = new MongoClient(mongoUrl);
-
-Console.WriteLine("Conectando a MongoDB...");
-var dbList = client.ListDatabaseNames().ToList();
-
-Console.WriteLine("Conexión establecida con MongoDB.");
-
-Console.WriteLine("Bases de datos disponibles:");
-foreach (var dbName in dbList)
+do
 {
-    Console.WriteLine($" - {dbName}");
-}
+    Console.Clear();
+    Console.WriteLine("=== MENÚ PRINCIPAL ===");
+    Console.WriteLine("1. Insertar un nuevo documento de cuenta");
+    Console.WriteLine("2. Listar todos los documentos de cuenta");
+    Console.WriteLine("3. Salir");
+    Console.Write("\nElige una opción (1-3): ");
 
+    opcion = Console.ReadLine()!;
 
-Console.WriteLine("Nos aseguramos de tener la base de datos y colección correctas:");
-var database = client.GetDatabase("test");
+    switch (opcion)
+    {
+        case "1":
+            Console.Clear();
 
-// Querying a MongoDB Collection in C# Applications
+            // TODO: Aquí puedes agregar la lógica para insertar un nuevo documento de cuenta en MongoDB
+            Console.WriteLine("Funcionalidad aún no implementada...");
 
-var accountsCollection = database.GetCollection<Account>("account");
+            break;
 
-var account = accountsCollection
-   .Find(a => a.AccountId == "MDB829001337")
-   .FirstOrDefault();
+        case "2":            
+            mongoDBAdmin.ConsultarDocumentos();
+            break;
 
-Console.WriteLine($"Cuenta encontrada: {account?.AccountHolder}, Balance: {account?.Balance}");
+        case "3":
+            Console.WriteLine("\nSaliendo del programa. ¡Hasta luego!");
+            break;
 
-Console.WriteLine("Lista de cuentas:");
-var accounts = accountsCollection.Find(_ => true).ToList();
-foreach (var item in accounts)
-{
-    Console.WriteLine(item.AccountHolder);
-}
+        default:
+            Console.WriteLine("\nOpción no válida. Por favor, elige un número entre 1 y 3.");
+            break;
+    }
 
-// Usando la clase Account para representar un documento de cuenta bancaria
-//var accountsCollection = database.GetCollection<Account>("account");
-//Console.WriteLine("Creando una nueva cuenta...");
-//var newAccount = new Account
-//{
-//    AccountId = "MDB829001337",
-//    AccountHolder = "Linus Torvalds",
-//    AccountType = "checking",
-//    Balance = 50352434
-//};
+    if (opcion != "3")
+    {
+        Console.WriteLine("\nPresiona cualquier tecla para continuar...");
+        Console.ReadKey();
+    }
 
-//Console.WriteLine("Insertando la nueva cuenta en la colección...");
-//accountsCollection.InsertOne(newAccount);
-//Console.WriteLine("Nueva cuenta insertada en la colección.");
-
-// Usando el objeto BsonDocument para insertar un documento directamente
-//var accountsCollectionBson = database.GetCollection<BsonDocument>("account");
-//Console.WriteLine("Creando una nueva cuenta...");
-//var document = new BsonDocument
-//{
-//   { "account_id", "MDB829001338" },
-//   { "account_holder", "Ada Lovelace" },
-//   { "account_type", "checking" },
-//   { "balance", 79352434 }
-//};
-
-//Console.WriteLine("Insertando la nueva cuenta en la colección...");
-//accountsCollectionBson.InsertOne(document);
-//Console.WriteLine("Nueva cuenta insertada en la colección.");
+} while (opcion != "3");
