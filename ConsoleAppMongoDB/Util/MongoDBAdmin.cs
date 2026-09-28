@@ -14,24 +14,26 @@ namespace ConsoleAppMongoDB.Util
         {
             
         }
-        public void ConsultarDocumentos()
-        {
-            Console.WriteLine("Hola Mundo, VS2026 + MongoDB, consultar documentos de cuenta");
 
+        public void ListarBasesDeDatos()
+        {
             var mongoUrl = Environment.GetEnvironmentVariable("MONGODB_URI");
             var client = new MongoClient(mongoUrl);
-
             Console.WriteLine("Conectando a MongoDB...");
             var dbList = client.ListDatabaseNames().ToList();
-
             Console.WriteLine("Conexión establecida con MongoDB.");
-
             Console.WriteLine("Bases de datos disponibles:");
             foreach (var dbName in dbList)
             {
                 Console.WriteLine($" - {dbName}");
             }
+        }
 
+        public void ConsultarDocumentos()
+        {
+            Console.WriteLine("Hola Mundo, VS2026 + MongoDB, consultar documentos de cuenta");
+            var mongoUrl = Environment.GetEnvironmentVariable("MONGODB_URI");
+            var client = new MongoClient(mongoUrl);
 
             Console.WriteLine("Nos aseguramos de tener la base de datos y colección correctas:");
             var database = client.GetDatabase("test");
@@ -58,30 +60,15 @@ namespace ConsoleAppMongoDB.Util
             var mongoUrl = Environment.GetEnvironmentVariable("MONGODB_URI");
             var client = new MongoClient(mongoUrl);
 
-            Console.WriteLine("Conectando a MongoDB...");
-            var dbList = client.ListDatabaseNames().ToList();
-
-            Console.WriteLine("Conexión establecida con MongoDB.");
-
-            Console.WriteLine("Bases de datos disponibles:");
-            foreach (var dbName in dbList)
-            {
-                Console.WriteLine($" - {dbName}");
-            }
-
             Console.WriteLine("Nos aseguramos de tener la base de datos y colección correctas:");
             var database = client.GetDatabase("test");
 
             // Usando la clase Account para representar un documento de cuenta bancaria
             var accountsCollection = database.GetCollection<Account>("account");
             Console.WriteLine("Creando una nueva cuenta...");
-            var newAccount = new Account
-            {
-                AccountId = "MDB829001337",
-                AccountHolder = "Linus Torvalds",
-                AccountType = "checking",
-                Balance = 50352434
-            };
+            DatoFalso datoFalso = new DatoFalso();
+
+            var newAccount = datoFalso.GenerarCuentaFalsa();
 
             Console.WriteLine("Insertando la nueva cuenta en la colección...");
             accountsCollection.InsertOne(newAccount);
@@ -90,13 +77,7 @@ namespace ConsoleAppMongoDB.Util
             // Usando el objeto BsonDocument para insertar un documento directamente
             var accountsCollectionBson = database.GetCollection<BsonDocument>("account");
             Console.WriteLine("Creando una nueva cuenta...");
-            var document = new BsonDocument
-            {
-               { "account_id", "MDB829001338" },
-               { "account_holder", "Ada Lovelace" },
-               { "account_type", "checking" },
-               { "balance", 79352434 }
-            };
+            var document = datoFalso.GeneraCuentaFalsaBson();
 
             Console.WriteLine("Insertando la nueva cuenta en la colección...");
             accountsCollectionBson.InsertOne(document);

@@ -9,8 +9,9 @@ do
     Console.WriteLine("=== MENÚ PRINCIPAL ===");
     Console.WriteLine("1. Insertar un nuevo documento de cuenta");
     Console.WriteLine("2. Listar todos los documentos de cuenta");
-    Console.WriteLine("3. Salir");
-    Console.Write("\nElige una opción (1-3): ");
+    Console.WriteLine("3. Listar bases de datos");
+    Console.WriteLine("4. Salir");
+    Console.Write("\nElige una opción (1-4): ");
 
     opcion = Console.ReadLine()!;
 
@@ -19,8 +20,7 @@ do
         case "1":
             Console.Clear();
 
-            // TODO: Aquí puedes agregar la lógica para insertar un nuevo documento de cuenta en MongoDB
-            Console.WriteLine("Funcionalidad aún no implementada...");
+            mongoDBAdmin.InsertarDocumentos();
 
             break;
 
@@ -29,18 +29,22 @@ do
             break;
 
         case "3":
+            mongoDBAdmin.ListarBasesDeDatos();
+            break;
+
+        case "4":
             Console.WriteLine("\nSaliendo del programa. ¡Hasta luego!");
             break;
 
         default:
-            Console.WriteLine("\nOpción no válida. Por favor, elige un número entre 1 y 3.");
+            Console.WriteLine("\nOpción no válida. Por favor, elige un número entre 1 y 4.");
             break;
     }
 
-    if (opcion != "3")
+    if (opcion != "4")
     {
         Console.WriteLine("\nPresiona cualquier tecla para continuar...");
         Console.ReadKey();
     }
 
-} while (opcion != "3");
+} while (opcion != "4");
